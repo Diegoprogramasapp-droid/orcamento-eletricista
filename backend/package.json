@@ -1,0 +1,15 @@
+{
+  "name": "orcamento-eletricista-backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "nanoid": "^5.0.7",
+    "pdfkit": "^0.15.0"
+  }
+}
