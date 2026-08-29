@@ -50,7 +50,7 @@ router.post("/", async (req, res) => {
       `INSERT INTO usuarios (id, nome, telefone, email, cidade, foto, metricas)
        VALUES ($1, $2, $3, $4, $5, $6, $7)
        RETURNING *`,
-      [id, nome, telefone, email || null, cidade, foto || null, metricas]
+      [id, nome, telefone, email || null, cidade, foto || null, JSON.stringify(metricas)]
     );
     res.status(201).json(linhaParaUsuario(rows[0]));
   } catch (err) {
@@ -84,7 +84,7 @@ router.put("/:id", async (req, res) => {
     const { rows } = await pool.query(
       `UPDATE usuarios SET nome=$1, telefone=$2, email=$3, cidade=$4, foto=$5, metricas=$6
        WHERE id=$7 RETURNING *`,
-      [dados.nome, dados.telefone, dados.email, dados.cidade, dados.foto, metricas, req.params.id]
+      [dados.nome, dados.telefone, dados.email, dados.cidade, dados.foto, JSON.stringify(metricas), req.params.id]
     );
     res.json(linhaParaUsuario(rows[0]));
   } catch (err) {

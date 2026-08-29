@@ -63,12 +63,12 @@ router.post("/", async (req, res) => {
       [
         id,
         usuarioId,
-        cliente || {},
+        JSON.stringify(cliente || {}),
         modeloCobranca,
-        propostaBase.itensServico,
-        propostaBase.itensMaterial,
+        JSON.stringify(propostaBase.itensServico),
+        JSON.stringify(propostaBase.itensMaterial),
         propostaBase.kmDeslocamento,
-        calculo,
+        JSON.stringify(calculo),
       ]
     );
     res.status(201).json(linhaParaProposta(rows[0]));
