@@ -15,6 +15,7 @@ async function request(path, options = {}) {
 export const api = {
   criarPerfil: (dados) => request("/perfil", { method: "POST", body: JSON.stringify(dados) }),
   buscarPerfil: (id) => request(`/perfil/${id}`),
+  buscarPerfilPorTelefone: (telefone) => request(`/perfil?telefone=${encodeURIComponent(telefone)}`),
 
   criarProposta: (dados) => request("/propostas", { method: "POST", body: JSON.stringify(dados) }),
   listarPropostas: (usuarioId) => request(`/propostas?usuarioId=${usuarioId}`),

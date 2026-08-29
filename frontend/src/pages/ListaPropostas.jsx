@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { api } from "../api.js";
 
 const rotuloStatus = {
@@ -12,6 +12,7 @@ const rotuloStatus = {
 
 export default function ListaPropostas() {
   const usuarioId = localStorage.getItem("usuarioId");
+  const navigate = useNavigate();
   const [propostas, setPropostas] = useState([]);
   const [carregando, setCarregando] = useState(true);
 
@@ -27,13 +28,23 @@ export default function ListaPropostas() {
     setPropostas((lista) => lista.map((p) => (p.id === id ? atualizada : p)));
   }
 
+  function sair() {
+    localStorage.removeItem("usuarioId");
+    navigate("/entrar");
+  }
+
   return (
     <div className="container">
       <div className="cabecalho-lista">
         <h1>Seus orçamentos</h1>
-        <Link className="botao" to="/propostas/nova">
-          + Novo orçamento
-        </Link>
+        <div style={{ display: "flex", gap: 8 }}>
+          <Link className="botao" to="/propostas/nova">
+            + Novo orçamento
+          </Link>
+          <button className="botao secundario" onClick={sair}>
+            Sair
+          </button>
+        </div>
       </div>
 
       {carregando && <p>Carregando...</p>}

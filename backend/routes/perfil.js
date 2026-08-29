@@ -17,6 +17,21 @@ function linhaParaUsuario(row) {
   };
 }
 
+// Busca um eletricista pelo telefone — usado para "entrar" sem senha
+router.get("/", async (req, res) => {
+  const { telefone } = req.query;
+  if (!telefone) return res.status(400).json({ erro: "informe o telefone" });
+
+  try {
+    const { rows } = await pool.query("SELECT * FROM usuarios WHERE telefone = $1", [telefone]);
+    if (!rows[0]) return res.status(404).json({ erro: "nenhum cadastro encontrado com esse telefone" });
+    res.json(linhaParaUsuario(rows[0]));
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ erro: "falha ao buscar por telefone" });
+  }
+});
+
 // Cria o pré-cadastro do eletricista (nome, contato, métricas de cobrança)
 router.post("/", async (req, res) => {
   const {
@@ -34,6 +49,11 @@ router.post("/", async (req, res) => {
 
   if (!nome || !telefone || !cidade) {
     return res.status(400).json({ erro: "nome, telefone e cidade são obrigatórios" });
+  }
+
+  const existente = await pool.query("SELECT id FROM usuarios WHERE telefone = $1", [telefone]);
+  if (existente.rows[0]) {
+    return res.status(409).json({ erro: "já existe um cadastro com esse telefone. Use a opção Entrar." });
   }
 
   const id = nanoid();

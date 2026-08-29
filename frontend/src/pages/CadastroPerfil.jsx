@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { api } from "../api.js";
 
 const inicial = {
@@ -105,7 +105,17 @@ export default function CadastroPerfil() {
           </label>
         </fieldset>
 
-        {erro && <p className="erro">{erro}</p>}
+        {erro && (
+          <p className="erro">
+            {erro}
+            {erro.includes("Use a opção Entrar") && (
+              <>
+                {" "}
+                <Link to="/entrar">Ir para Entrar</Link>
+              </>
+            )}
+          </p>
+        )}
 
         <button type="submit" disabled={salvando}>
           {salvando ? "Salvando..." : "Salvar e continuar"}

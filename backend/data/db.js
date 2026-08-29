@@ -17,7 +17,7 @@ export async function initDB() {
     CREATE TABLE IF NOT EXISTS usuarios (
       id TEXT PRIMARY KEY,
       nome TEXT NOT NULL,
-      telefone TEXT NOT NULL,
+      telefone TEXT NOT NULL UNIQUE,
       email TEXT,
       cidade TEXT NOT NULL,
       foto TEXT,
@@ -25,6 +25,13 @@ export async function initDB() {
       criado_em TIMESTAMPTZ NOT NULL DEFAULT now()
     );
   `);
+
+  // Garante a restrição de telefone único mesmo em bancos criados antes dela existir
+  await pool
+    .query(`ALTER TABLE usuarios ADD CONSTRAINT usuarios_telefone_key UNIQUE (telefone);`)
+    .catch(() => {
+      // já existe a restrição, ou há telefones duplicados de testes antigos — seguir sem travar o start
+    });
 
   await pool.query(`
     CREATE TABLE IF NOT EXISTS propostas (

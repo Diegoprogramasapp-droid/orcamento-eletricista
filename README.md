@@ -36,35 +36,45 @@ Sobe em `http://localhost:5173`.
 
 ## Fluxo implementado
 
-1. **Cadastro** (`/cadastro`): nome, telefone, e-mail, cidade, foto e as
+1. **Entrar** (`/entrar`): eletricista já cadastrado digita o telefone e
+   recupera o acesso à sua conta em qualquer dispositivo/navegador — sem
+   senha, identificação simples por telefone (único por conta).
+2. **Cadastro** (`/cadastro`): nome, telefone, e-mail, cidade, foto e as
    métricas — valor/hora, valor/diária, valor/ponto, margem sobre material (%),
-   valor/km.
-2. **Nova proposta** (`/propostas/nova`): dados do cliente, escolha do modelo
+   valor/km. Se o telefone já estiver cadastrado, direciona para "Entrar".
+3. **Nova proposta** (`/propostas/nova`): dados do cliente, escolha do modelo
    de cobrança (hora, diária ou ponto — mutuamente exclusivos), itens de
    serviço, itens de material (cada um marcado como "do eletricista" ou "do
    cliente" — só os do eletricista entram no total, com margem aplicada),
    km de deslocamento. Cálculo automático do total.
-3. **PDF**: gerado no backend (`pdfkit`), com seção separada para materiais do
+4. **PDF**: gerado no backend (`pdfkit`), com seção separada para materiais do
    eletricista (com valor) e materiais do cliente (lista de referência, sem
    valor). Botão para abrir/enviar por WhatsApp.
-4. **Lista de orçamentos** (`/propostas`): status (pendente → enviada →
-   aceita → concluída), acesso rápido ao PDF.
+5. **Lista de orçamentos** (`/propostas`): status (pendente → enviada →
+   aceita → concluída), acesso rápido ao PDF, botão "Sair" para trocar de
+   conta/dispositivo.
 
 ## Persistência
 
-Os dados agora são salvos em `backend/data/db.json`, gerado automaticamente
-na primeira gravação (não precisa criar manualmente). Reiniciar o servidor
-não apaga mais os orçamentos e perfis. Esse arquivo fica de fora do git
-(veja `.gitignore`), então cada instalação começa com sua própria base local.
+Os dados agora ficam em um banco **Postgres** (tabelas `usuarios` e
+`propostas`, criadas automaticamente na primeira execução). Isso resolve o
+problema de perder dados quando o serviço reinicia — algo comum em planos
+gratuitos de hospedagem.
 
-Se for testar com vários eletricistas ao mesmo tempo em produção, esse
-arquivo único não escala bem (risco de duas escritas simultâneas se
-sobrescreverem) — nesse ponto vale migrar para SQLite ou Postgres.
+Para rodar local, defina a variável de ambiente `DATABASE_URL` apontando
+para um Postgres (local ou gratuito na nuvem) antes de `npm run dev`:
+
+```bash
+export DATABASE_URL="postgres://usuario:senha@host:5432/banco"
+npm run dev
+```
+
+No Render, ao criar um banco Postgres e conectá-lo ao Web Service, a
+variável `DATABASE_URL` é preenchida automaticamente — não precisa fazer
+nada manual além de vincular o banco ao serviço.
 
 ## O que falta para produção (próximos passos sugeridos)
 
-- Migrar de `db.json` para um banco real (Postgres/SQLite) quando o número
-  de usuários simultâneos crescer.
 - Autenticação de verdade (hoje o "login" é só o cadastro criando um ID salvo
   no navegador).
 - Envio automático via WhatsApp Business API / e-mail (hoje é um link
