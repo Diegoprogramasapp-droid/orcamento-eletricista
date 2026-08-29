@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import perfilRoutes from "./routes/perfil.js";
 import propostasRoutes from "./routes/propostas.js";
+import { initDB } from "./data/db.js";
 
 const app = express();
 app.use(cors());
@@ -13,6 +14,14 @@ app.use("/api/propostas", propostasRoutes);
 app.get("/api/health", (req, res) => res.json({ ok: true }));
 
 const PORT = process.env.PORT || 3333;
-app.listen(PORT, () => {
-  console.log(`API rodando em http://localhost:${PORT}`);
-});
+
+initDB()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`API rodando em http://localhost:${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error("Falha ao iniciar o banco de dados:", err);
+    process.exit(1);
+  });
