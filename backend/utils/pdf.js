@@ -44,7 +44,7 @@ export function gerarPdfProposta({ usuario, proposta, calculo }) {
     doc.font("Helvetica");
     doc.moveDown(0.8);
 
-    tituloSecao(doc, "Dados do cliente");
+    tituloSecao(doc, "Dados Do Cliente");
     doc.fontSize(10).fillColor("#333")
       .text(`Cliente: ${proposta.cliente?.nome || "-"}`)
       .text(`Endereço: ${proposta.cliente?.endereco || "-"}`);
@@ -62,7 +62,7 @@ export function gerarPdfProposta({ usuario, proposta, calculo }) {
     // Materiais do eletricista
     const materiaisEletricista = calculo.materiaisCalculados.filter((i) => i.responsavel === "eletricista");
     if (materiaisEletricista.length) {
-      tituloSecao(doc, "Materiais fornecidos pelo eletricista");
+      tituloSecao(doc, "Materiais Fornecidos Pelo Eletricista");
       materiaisEletricista.forEach((item) => {
         doc.fontSize(10).fillColor("#333")
           .text(`• ${item.nome} — ${item.quantidade}x — R$ ${item.valorFinal.toFixed(2)}`);
@@ -75,7 +75,7 @@ export function gerarPdfProposta({ usuario, proposta, calculo }) {
     // Materiais do cliente (lista de referência, sem cobrança)
     const materiaisCliente = calculo.materiaisCalculados.filter((i) => i.responsavel === "cliente");
     if (materiaisCliente.length) {
-      tituloSecao(doc, "Materiais que o cliente deve providenciar");
+      tituloSecao(doc, "Materiais Que O Cliente Deve Providenciar");
       materiaisCliente.forEach((item) => {
         doc.fontSize(10).fillColor("#333").text(`• ${item.nome} — ${item.quantidade}x`);
       });
@@ -105,7 +105,7 @@ export function gerarPdfProposta({ usuario, proposta, calculo }) {
 
 function tituloSecao(doc, texto) {
   doc.font("Helvetica-Bold").fontSize(12).fillColor("#000")
-    .text(`• ${texto}`, { underline: true });
+    .text(texto, { underline: true });
   doc.font("Helvetica");
   doc.moveDown(0.3);
 }
