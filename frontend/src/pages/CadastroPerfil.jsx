@@ -76,7 +76,7 @@ export default function CadastroPerfil() {
             <input name="cidade" value={form.cidade} onChange={handleChange} required />
           </label>
           <label>
-            Foto
+            Logomarca (opcional — aparece no cabeçalho do PDF)
             <input type="file" accept="image/*" onChange={handleFoto} />
           </label>
         </fieldset>

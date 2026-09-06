@@ -47,9 +47,12 @@ Sobe em `http://localhost:5173`.
    serviço, itens de material (cada um marcado como "do eletricista" ou "do
    cliente" — só os do eletricista entram no total, com margem aplicada),
    km de deslocamento. Cálculo automático do total.
-4. **PDF**: gerado no backend (`pdfkit`), com seção separada para materiais do
-   eletricista (com valor) e materiais do cliente (lista de referência, sem
-   valor). Botão para abrir/enviar por WhatsApp.
+4. **PDF**: gerado no backend (`pdfkit`), voltado para o cliente final — não
+   expõe a métrica interna de cobrança (horas/pontos/diárias), só os valores.
+   Traz a logomarca do profissional no cabeçalho (canto superior direito),
+   seções com títulos claros, valores destacados, e materiais do eletricista
+   separados dos materiais do cliente (lista de referência, sem valor).
+   Botão para abrir/enviar por WhatsApp.
 5. **Lista de orçamentos** (`/propostas`): status (pendente → enviada →
    aceita → concluída), acesso rápido ao PDF, botão "Sair" para trocar de
    conta/dispositivo.
