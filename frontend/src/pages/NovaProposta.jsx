@@ -66,7 +66,10 @@ export default function NovaProposta() {
       <div className="container">
         <h1>Orçamento gerado ✅</h1>
         <p className="subtitulo">
-          Total: <strong>R$ {propostaCriada.calculo.total.toFixed(2)}</strong>
+          Total:{" "}
+          <strong>
+            R$ {propostaCriada.calculo.total.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+          </strong>
         </p>
         <div className="acoes">
           <a

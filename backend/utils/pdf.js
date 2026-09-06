@@ -1,5 +1,14 @@
 import PDFDocument from "pdfkit";
 
+// Formata número no padrão brasileiro: milhar com ponto, decimal com vírgula
+// (ex: 1234.5 -> "1.234,50")
+function formatarMoeda(valor) {
+  return Number(valor).toLocaleString("pt-BR", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}
+
 // Gera o PDF do orçamento e devolve como Buffer.
 // Versão voltada para o cliente final: não expõe a métrica interna de
 // cobrança (horas/pontos/diárias), só os valores. Traz a logomarca do
@@ -65,7 +74,7 @@ export function gerarPdfProposta({ usuario, proposta, calculo }) {
       tituloSecao(doc, "Materiais Fornecidos Pelo Eletricista");
       materiaisEletricista.forEach((item) => {
         doc.fontSize(10).fillColor("#333")
-          .text(`• ${item.nome} — ${item.quantidade}x — R$ ${item.valorFinal.toFixed(2)}`);
+          .text(`• ${item.nome} — ${item.quantidade}x — R$ ${formatarMoeda(item.valorFinal)}`);
       });
       doc.moveDown(0.4);
       valorDestacado(doc, "Materiais", calculo.totalMaterial);
@@ -92,7 +101,7 @@ export function gerarPdfProposta({ usuario, proposta, calculo }) {
     doc.moveDown(0.6);
 
     // Total
-    doc.fontSize(16).fillColor("#000").text(`Total: R$ ${calculo.total.toFixed(2)}`, {
+    doc.fontSize(16).fillColor("#000").text(`Total: R$ ${formatarMoeda(calculo.total)}`, {
       underline: false,
     });
 
@@ -111,7 +120,7 @@ function tituloSecao(doc, texto) {
 }
 
 function valorDestacado(doc, rotulo, valor) {
-  doc.fontSize(11).fillColor("#000").text(`${rotulo}: R$ ${Number(valor).toFixed(2)}`);
+  doc.fontSize(11).fillColor("#000").text(`${rotulo}: R$ ${formatarMoeda(valor)}`);
 }
 
 function linhaDivisoria(doc, largura) {

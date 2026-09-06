@@ -60,7 +60,7 @@ export default function ListaPropostas() {
               <span className={`selo selo-${p.status}`}>{rotuloStatus[p.status]}</span>
             </div>
             <div className="detalhes-proposta">
-              <span>R$ {p.calculo.total.toFixed(2)}</span>
+              <span>R$ {p.calculo.total.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}</span>
               <a href={api.urlPdf(p.id)} target="_blank" rel="noreferrer">
                 PDF
               </a>
