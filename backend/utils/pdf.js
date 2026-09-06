@@ -40,7 +40,7 @@ export function gerarPdfProposta({ usuario, proposta, calculo }) {
     doc.moveDown(0.8);
 
     doc.font("Helvetica-Bold").fontSize(20).fillColor("#000")
-      .text("Orçamento de serviço elétrico", { align: "center" });
+      .text("Orçamento De Serviço Elétrico", { align: "center" });
     doc.font("Helvetica");
     doc.moveDown(0.8);
 
