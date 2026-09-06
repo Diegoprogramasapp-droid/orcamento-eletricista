@@ -39,7 +39,9 @@ export function gerarPdfProposta({ usuario, proposta, calculo }) {
     linhaDivisoria(doc, larguraUtil);
     doc.moveDown(0.8);
 
-    doc.fillColor("#000").fontSize(15).text("Orçamento de serviço elétrico", { underline: false });
+    doc.font("Helvetica-Bold").fontSize(20).fillColor("#000")
+      .text("Orçamento de serviço elétrico", { align: "center" });
+    doc.font("Helvetica");
     doc.moveDown(0.8);
 
     tituloSecao(doc, "Dados do cliente");
@@ -102,7 +104,9 @@ export function gerarPdfProposta({ usuario, proposta, calculo }) {
 }
 
 function tituloSecao(doc, texto) {
-  doc.fontSize(12).fillColor("#000").text(texto, { underline: false });
+  doc.font("Helvetica-Bold").fontSize(12).fillColor("#000")
+    .text(`■ ${texto}`, { underline: true });
+  doc.font("Helvetica");
   doc.moveDown(0.3);
 }
 
