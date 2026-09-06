@@ -105,7 +105,7 @@ export function gerarPdfProposta({ usuario, proposta, calculo }) {
 
 function tituloSecao(doc, texto) {
   doc.font("Helvetica-Bold").fontSize(12).fillColor("#000")
-    .text(`■ ${texto}`, { underline: true });
+    .text(`• ${texto}`, { underline: true });
   doc.font("Helvetica");
   doc.moveDown(0.3);
 }
