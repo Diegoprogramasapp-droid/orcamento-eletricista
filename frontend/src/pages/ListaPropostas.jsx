@@ -41,6 +41,9 @@ export default function ListaPropostas() {
           <Link className="botao" to="/propostas/nova">
             + Novo orçamento
           </Link>
+          <Link className="botao secundario" to="/perfil">
+            Editar perfil
+          </Link>
           <button className="botao secundario" onClick={sair}>
             Sair
           </button>

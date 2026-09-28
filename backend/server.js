@@ -6,7 +6,7 @@ import { initDB } from "./data/db.js";
 
 const app = express();
 app.use(cors());
-app.use(express.json({ limit: "5mb" })); // limit maior por causa da foto em base64
+app.use(express.json({ limit: "5mb" }));
 
 app.use("/api/perfil", perfilRoutes);
 app.use("/api/propostas", propostasRoutes);

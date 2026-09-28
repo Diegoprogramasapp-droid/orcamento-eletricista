@@ -4,6 +4,7 @@ import { api } from "../api.js";
 
 export default function Entrar() {
   const [telefone, setTelefone] = useState("");
+  const [pin, setPin] = useState("");
   const [carregando, setCarregando] = useState(false);
   const [erro, setErro] = useState("");
   const navigate = useNavigate();
@@ -13,11 +14,11 @@ export default function Entrar() {
     setErro("");
     setCarregando(true);
     try {
-      const usuario = await api.buscarPerfilPorTelefone(telefone.trim());
+      const usuario = await api.entrar(telefone.trim(), pin.trim());
       localStorage.setItem("usuarioId", usuario.id);
       navigate("/propostas");
     } catch (err) {
-      setErro("Nenhum cadastro encontrado com esse telefone.");
+      setErro("Telefone ou PIN incorretos.");
     } finally {
       setCarregando(false);
     }
@@ -26,7 +27,7 @@ export default function Entrar() {
   return (
     <div className="container">
       <h1>Entrar</h1>
-      <p className="subtitulo">Digite o telefone que você usou no cadastro.</p>
+      <p className="subtitulo">Digite o telefone e o PIN que você usou no cadastro.</p>
 
       <form onSubmit={handleSubmit} className="form">
         <fieldset>
@@ -39,12 +40,24 @@ export default function Entrar() {
               required
             />
           </label>
+          <label>
+            PIN (4 a 6 números)
+            <input
+              value={pin}
+              onChange={(e) => setPin(e.target.value)}
+              inputMode="numeric"
+              pattern="[0-9]*"
+              maxLength={6}
+              placeholder="••••"
+              required
+            />
+          </label>
         </fieldset>
 
         {erro && <p className="erro">{erro}</p>}
 
         <button type="submit" disabled={carregando}>
-          {carregando ? "Buscando..." : "Entrar"}
+          {carregando ? "Entrando..." : "Entrar"}
         </button>
       </form>
 

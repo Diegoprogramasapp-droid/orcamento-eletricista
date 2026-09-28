@@ -15,7 +15,10 @@ async function request(path, options = {}) {
 export const api = {
   criarPerfil: (dados) => request("/perfil", { method: "POST", body: JSON.stringify(dados) }),
   buscarPerfil: (id) => request(`/perfil/${id}`),
-  buscarPerfilPorTelefone: (telefone) => request(`/perfil?telefone=${encodeURIComponent(telefone)}`),
+  entrar: (telefone, pin) =>
+    request("/perfil/entrar", { method: "POST", body: JSON.stringify({ telefone, pin }) }),
+  atualizarPerfil: (id, dados) =>
+    request(`/perfil/${id}`, { method: "PUT", body: JSON.stringify(dados) }),
 
   criarProposta: (dados) => request("/propostas", { method: "POST", body: JSON.stringify(dados) }),
   listarPropostas: (usuarioId) => request(`/propostas?usuarioId=${usuarioId}`),

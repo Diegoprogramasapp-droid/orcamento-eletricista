@@ -1,0 +1,92 @@
+{
+  "usuarios": {
+    "h1ziqJqZcp2TEe1r48fu6": {
+      "id": "h1ziqJqZcp2TEe1r48fu6",
+      "nome": "Diego Modesto",
+      "telefone": "11 947945177",
+      "email": "diego_modesto2508@icloud.com",
+      "cidade": "Santana de Parnaíba",
+      "foto": null,
+      "metricas": {
+        "valorHora": 150,
+        "valorDiaria": 350,
+        "valorPonto": 55,
+        "margemMaterial": 15,
+        "valorKm": 1
+      },
+      "criadoEm": "2026-08-25T02:10:33.898Z"
+    }
+  },
+  "propostas": {
+    "Qc4Lm22ThAntAqygw7wEA": {
+      "id": "Qc4Lm22ThAntAqygw7wEA",
+      "usuarioId": "h1ziqJqZcp2TEe1r48fu6",
+      "cliente": {
+        "nome": "Jose",
+        "telefone": "11 9339391211",
+        "endereco": "Cajamar"
+      },
+      "modeloCobranca": "hora",
+      "itensServico": [
+        {
+          "descricao": "troca de quadro",
+          "quantidade": "3"
+        }
+      ],
+      "itensMaterial": [],
+      "kmDeslocamento": "16",
+      "status": "pendente",
+      "criadoEm": "2026-08-25T02:11:12.809Z",
+      "calculo": {
+        "totalServico": 450,
+        "totalMaterial": 0,
+        "totalDeslocamento": 16,
+        "materiaisCalculados": [],
+        "total": 466
+      }
+    },
+    "84-qKhxYBTKDy5ytFyW5h": {
+      "id": "84-qKhxYBTKDy5ytFyW5h",
+      "usuarioId": "h1ziqJqZcp2TEe1r48fu6",
+      "cliente": {
+        "nome": "Carla",
+        "telefone": "11 945456767",
+        "endereco": "Jundiai"
+      },
+      "modeloCobranca": "diaria",
+      "itensServico": [
+        {
+          "descricao": "montagem de infra",
+          "quantidade": "2"
+        }
+      ],
+      "itensMaterial": [
+        {
+          "nome": "condulete",
+          "quantidade": 1,
+          "custo": "5",
+          "responsavel": "eletricista"
+        }
+      ],
+      "kmDeslocamento": "23",
+      "status": "pendente",
+      "criadoEm": "2026-08-25T02:12:25.438Z",
+      "calculo": {
+        "totalServico": 700,
+        "totalMaterial": 5.75,
+        "totalDeslocamento": 23,
+        "materiaisCalculados": [
+          {
+            "nome": "condulete",
+            "quantidade": 1,
+            "custo": 5,
+            "responsavel": "eletricista",
+            "margemAplicada": 15,
+            "valorFinal": 5.75
+          }
+        ],
+        "total": 728.75
+      }
+    }
+  }
+}

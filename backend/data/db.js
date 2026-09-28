@@ -2,9 +2,6 @@ import pg from "pg";
 
 const { Pool } = pg;
 
-// O Render injeta DATABASE_URL automaticamente quando o Postgres é conectado
-// ao Web Service. Localmente, defina a mesma variável no seu .env se quiser
-// testar com Postgres na sua máquina (opcional).
 export const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: process.env.DATABASE_URL?.includes("render.com")
@@ -22,6 +19,7 @@ export async function initDB() {
       cidade TEXT NOT NULL,
       foto TEXT,
       metricas JSONB NOT NULL DEFAULT '{}',
+      pin_hash TEXT,
       criado_em TIMESTAMPTZ NOT NULL DEFAULT now()
     );
   `);
@@ -29,9 +27,12 @@ export async function initDB() {
   // Garante a restrição de telefone único mesmo em bancos criados antes dela existir
   await pool
     .query(`ALTER TABLE usuarios ADD CONSTRAINT usuarios_telefone_key UNIQUE (telefone);`)
-    .catch(() => {
-      // já existe a restrição, ou há telefones duplicados de testes antigos — seguir sem travar o start
-    });
+    .catch(() => {});
+
+  // Garante a coluna de PIN mesmo em bancos criados antes dela existir
+  await pool
+    .query(`ALTER TABLE usuarios ADD COLUMN IF NOT EXISTS pin_hash TEXT;`)
+    .catch(() => {});
 
   await pool.query(`
     CREATE TABLE IF NOT EXISTS propostas (

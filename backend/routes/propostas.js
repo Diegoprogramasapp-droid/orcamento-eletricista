@@ -33,7 +33,6 @@ function linhaParaUsuario(row) {
   };
 }
 
-// Cria uma nova proposta e já retorna os totais calculados
 router.post("/", async (req, res) => {
   const { usuarioId, cliente, modeloCobranca, itensServico, itensMaterial, kmDeslocamento } = req.body;
 
@@ -78,7 +77,6 @@ router.post("/", async (req, res) => {
   }
 });
 
-// Lista propostas de um eletricista
 router.get("/", async (req, res) => {
   const { usuarioId, status } = req.query;
   try {
@@ -115,7 +113,6 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// Atualiza status (ex: enviada, aceita, recusada, concluída)
 router.patch("/:id/status", async (req, res) => {
   const { status } = req.body;
   const validos = ["pendente", "enviada", "aceita", "recusada", "concluida"];
@@ -134,7 +131,6 @@ router.patch("/:id/status", async (req, res) => {
   }
 });
 
-// Gera e baixa o PDF da proposta
 router.get("/:id/pdf", async (req, res) => {
   try {
     const { rows: propostas } = await pool.query("SELECT * FROM propostas WHERE id = $1", [

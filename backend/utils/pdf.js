@@ -1,7 +1,6 @@
 import PDFDocument from "pdfkit";
 
 // Formata número no padrão brasileiro: milhar com ponto, decimal com vírgula
-// (ex: 1234.5 -> "1.234,50")
 function formatarMoeda(valor) {
   return Number(valor).toLocaleString("pt-BR", {
     minimumFractionDigits: 2,
@@ -24,7 +23,6 @@ export function gerarPdfProposta({ usuario, proposta, calculo }) {
     const larguraUtil = doc.page.width - doc.page.margins.left - doc.page.margins.right;
     const topoInicial = doc.y;
 
-    // Logomarca do profissional, no canto superior direito
     const logo = converterDataUrlParaBuffer(usuario.foto);
     if (logo) {
       try {
@@ -32,17 +30,15 @@ export function gerarPdfProposta({ usuario, proposta, calculo }) {
           fit: [70, 70],
         });
       } catch (e) {
-        // se a imagem estiver corrompida ou em formato não suportado, segue sem ela
+        // segue sem a imagem se estiver corrompida
       }
     }
 
-    // Cabeçalho — dados do profissional (canto superior esquerdo)
     doc.fontSize(18).fillColor("#000").text(usuario.nome, { continued: false });
     doc.fontSize(10).fillColor("#555")
       .text(`${usuario.telefone}${usuario.email ? " · " + usuario.email : ""}`)
       .text(usuario.cidade);
 
-    // Garante espaço suficiente abaixo do maior dos dois blocos (texto ou logo)
     doc.y = Math.max(doc.y, topoInicial + 70) + 15;
 
     linhaDivisoria(doc, larguraUtil);
@@ -59,7 +55,6 @@ export function gerarPdfProposta({ usuario, proposta, calculo }) {
       .text(`Endereço: ${proposta.cliente?.endereco || "-"}`);
     doc.moveDown(1);
 
-    // Serviços — só a descrição, sem expor a métrica interna de cobrança
     tituloSecao(doc, "Serviços");
     proposta.itensServico.forEach((item) => {
       doc.fontSize(10).fillColor("#333").text(`• ${item.descricao}`);
@@ -68,7 +63,6 @@ export function gerarPdfProposta({ usuario, proposta, calculo }) {
     valorDestacado(doc, "Mão de obra", calculo.totalServico);
     doc.moveDown(0.8);
 
-    // Materiais do eletricista
     const materiaisEletricista = calculo.materiaisCalculados.filter((i) => i.responsavel === "eletricista");
     if (materiaisEletricista.length) {
       tituloSecao(doc, "Materiais Fornecidos Pelo Eletricista");
@@ -81,7 +75,6 @@ export function gerarPdfProposta({ usuario, proposta, calculo }) {
       doc.moveDown(0.8);
     }
 
-    // Materiais do cliente (lista de referência, sem cobrança)
     const materiaisCliente = calculo.materiaisCalculados.filter((i) => i.responsavel === "cliente");
     if (materiaisCliente.length) {
       tituloSecao(doc, "Materiais Que O Cliente Deve Providenciar");
@@ -91,7 +84,6 @@ export function gerarPdfProposta({ usuario, proposta, calculo }) {
       doc.moveDown(1);
     }
 
-    // Deslocamento
     if (calculo.totalDeslocamento > 0) {
       valorDestacado(doc, "Deslocamento", calculo.totalDeslocamento);
       doc.moveDown(0.8);
@@ -100,7 +92,6 @@ export function gerarPdfProposta({ usuario, proposta, calculo }) {
     linhaDivisoria(doc, larguraUtil);
     doc.moveDown(0.6);
 
-    // Total
     doc.fontSize(16).fillColor("#000").text(`Total: R$ ${formatarMoeda(calculo.total)}`, {
       underline: false,
     });
@@ -132,7 +123,6 @@ function linhaDivisoria(doc, largura) {
     .stroke();
 }
 
-// Converte uma data URL (ex: "data:image/png;base64,....") em Buffer para o pdfkit.
 function converterDataUrlParaBuffer(dataUrl) {
   if (!dataUrl || typeof dataUrl !== "string" || !dataUrl.startsWith("data:")) return null;
   const partes = dataUrl.split(",");
